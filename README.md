@@ -47,7 +47,7 @@ npm run build
 | 缺陷记录 | `defect` | 缺陷记录 | 缺陷编号、所属管线、缺陷类型 |
 | 外出维修 | `out_repair` | 外出维修 | 派遣编号、缺陷来源、维修人员 |
 | 维修验收 | `repair_accept` | 维修验收记录 | 验收编号、关联维修、验收人员 |
-| 管道检测 | `pipe_detect` | 检测记录 | 检测编号、检测管段、检测方式 |
+| 管道检测 | `pipe_detect` | 检测报告（含多轮初检/复测） | 检测编号、检测管段、检测方式、检测设备、检测日期、各轮结论、当前采用依据 |
 | 井盖设施 | `manhole` | 井盖设施 | 井盖编号、所属道路、井盖类型 |
 | 泵站运行 | `pump_station` | 泵站 | 泵站编号、泵站名称、所在区域 |
 | 排水管网 | `drain_network` | 排水管段 | 管段编号、上游节点、下游节点 |
@@ -69,3 +69,20 @@ npm run build
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
 - 想回到初始数据：清掉浏览器里 `underground-pipeline-inspection:entries` 这一项，或调用 `resetModule(模块)`。
+
+## 管道检测报告检索台
+
+`pipe_detect` 模块已升级为独立的报告检索台（不经过通用条目表）：
+
+- 数据与规则：`frontend/src/data/pipe-detect/`（类型、示例报告、localStorage 存储）+
+  `frontend/src/api/pipe-detect-service.ts`（过滤校验、排序分页、状态派生、复测提交、版本 CAS）。
+- 一条报告 = 一个检测管段 + 多轮检测（初检与历次复测只追加、不改写、不覆盖）；
+  报告状态严格由轮次派生，未完成的检测绝不会显示成已完成。
+- 复测结论与历史结论冲突时，每一轮结论与原始报告都保留，并在详情页标明「当前采用依据」，
+  会商后也可改采用某一历史轮次（同样留痕）。
+- 并发提交有两层保护：同页的进程内提交锁 + 报告版本号 CAS（跨标签页同样生效），最终只落一个当前版本。
+- 查询条件（过滤/排序/页码）只有在校验通过、查询成功后才保存到
+  `underground-pipeline-inspection:pipe-detect-query`；从单条报告详情返回时按保存条件恢复。
+- 报告数据保存在 `underground-pipeline-inspection:pipe-detect-reports`；
+  检索台页面上的「恢复示例报告」或 `resetReports()` 可回到示例数据。
+- 服务层有一套冒烟断言：`frontend/scripts/smoke-pipe-detect.ts`（用 esbuild 打包后在 node 里跑）。
