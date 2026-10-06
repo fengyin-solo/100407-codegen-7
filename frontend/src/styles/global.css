@@ -35,3 +35,59 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .error-text { color: #b42318; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
 .legend-item { background: #eef2f7; border-radius: 999px; padding: 2px 10px; }
+
+/* 管道检测报告检索台 */
+.filter-grid { align-items: flex-end; }
+.filter-item input, .filter-item select, .modal-card input, .modal-card select, .modal-card textarea {
+  border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; min-width: 160px;
+  font-family: inherit;
+}
+.filter-actions { display: flex; gap: 8px; }
+.form-error { color: #b42318; font-size: 13px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.form-ok { color: #067647; font-size: 13px; background: #ecfdf3; border: 1px solid #abefc6; padding: 8px 10px; border-radius: 6px; }
+.error-chip { background: #fef3f2; border: 1px solid #fda29b; border-radius: 999px; padding: 1px 10px; font-size: 12px; }
+.detect-table th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+.detect-table th.sorted { background: #eef4ff; }
+.sort-arrow { color: var(--brand); font-size: 11px; margin-left: 2px; }
+.muted { color: var(--muted); }
+.not-done { color: #b54708; font-style: normal; font-size: 12px; background: #fffaeb; border-radius: 4px; padding: 0 4px; }
+.round-badge { display: inline-block; margin-left: 6px; font-size: 11px; background: #eef4ff; color: var(--brand); border-radius: 999px; padding: 0 8px; }
+.conflict-flag { display: inline-block; margin-left: 6px; font-size: 11px; color: #b42318; background: #fef3f2; border: 1px solid #fda29b; border-radius: 999px; padding: 0 8px; }
+.row-conflict { background: #fffdfa; }
+.row-pinned { outline: 2px solid var(--brand); outline-offset: -2px; }
+.status-tag { display: inline-block; border-radius: 999px; padding: 2px 10px; font-size: 12px; white-space: nowrap; }
+.status-tag.big { font-size: 14px; padding: 4px 14px; }
+.status-pending { background: #f2f4f7; color: #475467; }
+.status-running { background: #fffaeb; color: #b54708; }
+.status-done { background: #ecfdf3; color: #067647; }
+.status-retest { background: #fef3f2; color: #b42318; }
+.detect-foot { align-items: center; }
+.pager { display: flex; gap: 8px; align-items: center; }
+.pager .btn:disabled { opacity: .5; cursor: not-allowed; }
+.page-size select { padding: 2px 4px; }
+.page-info { font-size: 12px; }
+.modal-mask { position: fixed; inset: 0; background: rgba(16, 24, 40, .45); display: flex; align-items: center; justify-content: center; z-index: 20; }
+.modal-card { background: #fff; border-radius: 10px; padding: 18px 20px; width: 420px; max-width: calc(100vw - 32px); display: flex; flex-direction: column; gap: 10px; max-height: 90vh; overflow: auto; }
+.modal-card.wide { width: 640px; flex-direction: row; flex-wrap: wrap; }
+.modal-card.wide label { flex: 1 1 45%; }
+.modal-card label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted); }
+.modal-card label.modal-full { flex: 1 1 100%; }
+.modal-card h3 { margin: 0 0 4px; flex: 1 1 100%; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; flex: 1 1 100%; }
+
+/* 报告详情 */
+.version-tag { font-size: 12px; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 2px 10px; }
+.conflict-banner { background: #fffaeb; border: 1px solid #fedf89; color: #b54708; border-radius: 8px; padding: 10px 12px; font-size: 13px; margin-bottom: 12px; }
+.detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+.detail-grid > div { font-size: 13px; display: flex; flex-direction: column; gap: 4px; }
+.detail-grid-wide { grid-column: 1 / -1; }
+.detail-label { color: var(--muted); font-size: 12px; }
+.rounds-block, .actions-block { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
+.rounds-block h3, .actions-block h3 { margin: 0 0 10px; font-size: 14px; }
+.round-adopted { background: #f5f8ff; }
+.adopted-mark { color: var(--brand); }
+.conclusion-pass { color: #067647; font-weight: 600; }
+.conclusion-fail { color: #b42318; font-weight: 600; }
+.empty-box { border: 1px dashed var(--border); border-radius: 6px; padding: 16px; text-align: center; color: var(--muted); font-size: 13px; }
+.action-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.action-hint { margin: 0; }

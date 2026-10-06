@@ -1,5 +1,6 @@
 import { MODULE_BY_KEY } from '@/data/modules'
 import { allRows, listRows, resetRows, saveRows } from '@/data/local-store'
+import { detectReports } from '@/data/pipe-detect/store'
 import type { ActionResult, EntryRow, ModuleMeta, OverviewResult, PageResult } from '@/data/types'
 
 // 会写进数据的「往回走」动作：命中就把这条记录标成异常态，看板上能一眼看出来。
@@ -86,7 +87,19 @@ export function downloadEntries(key: string): void {
 
 export function loadOverview(): OverviewResult {
   const rows = allRows()
+  // 管道检测已升级为独立的报告数据模型（轮次/版本/采用依据），概览改从新数据层取数。
+  const detectReportsAll = detectReports()
+  const detectStats = {
+    created: detectReportsAll.length,
+    pending: detectReportsAll.filter((report) => report.status === '待检测' || report.status === '检测中').length,
+    abnormal: detectReportsAll.filter(
+      (report) => report.conflict || report.status === '需复测',
+    ).length,
+  }
   const modules = [...MODULE_BY_KEY.values()].map((meta) => {
+    if (meta.key === 'pipe_detect') {
+      return { name: meta.name, ...detectStats }
+    }
     const entries = rows[meta.key] ?? []
     return {
       name: meta.name,

@@ -69,3 +69,18 @@ npm run build
   `frontend/src/data/seed.ts`。
 - 状态流转只允许在 `local-service.ts` 里改，页面组件不做业务判断。
 - 想回到初始数据：清掉浏览器里 `underground-pipeline-inspection:entries` 这一项，或调用 `resetModule(模块)`。
+
+## 管道检测报告检索台（pipe_detect）
+
+管道检测已升级为独立的报告数据模型，和其他通用模块分开存放：
+
+- 领域模型/种子数据/持久化在 `frontend/src/data/pipe-detect/`，页面读写统一走
+  `frontend/src/api/pipe-detect-controller.ts`（再转到 `pipe-detect-service.ts`）。
+- localStorage 键：报告数据 `underground-pipeline-inspection:pipe-detect-reports`，
+  已保存的过滤/排序/翻页条件 `underground-pipeline-inspection:pipe-detect-query`。
+- 一份报告可挂多轮检测（初检 + 多次复测）。复测只**追加**轮次，原始报告与历史结论不覆盖、不删除；
+  结论冲突时各轮结论全部留档，`adoptedRound/adoptedBasis` 标明当前采用哪一轮及依据。
+- 所有流转都带乐观锁版本号：同一版本并发提交只有一次落库，另一次收到版本冲突提示。
+- 过滤条件逐字段校验，不合法或结果为空时保留用户输入并给出说明；未完成报告没有实际检测日期，
+  不会出现在日期过滤结果里，也不会显示成已完成。
+- 想回到初始报告数据：点检索台右上角「恢复示例数据」，或清掉上面的 pipe-detect storage 键。
